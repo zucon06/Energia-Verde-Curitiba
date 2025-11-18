@@ -31,7 +31,7 @@ const InvestmentSimulator: React.FC<InvestmentSimulatorProps> = ({ projects }) =
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(e.target.value, 10);
-    if (isNaN(value) || value < 0) value = 0;
+    if (isNaN(value)) value = 0;
     setInvestmentAmount(value);
   };
   
@@ -94,16 +94,28 @@ const InvestmentSimulator: React.FC<InvestmentSimulatorProps> = ({ projects }) =
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="contribution-amount-input" className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                       <span>Valor a Aportar (BRL)</span>
-                       <span className="text-lg font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-md">
-                            {investmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        </span>
-                    </label>
+                    <div className="flex justify-between items-center mb-2">
+                        <label htmlFor="contribution-amount-input" className="text-sm text-gray-500 dark:text-gray-400">
+                           Valor a Aportar (BRL)
+                        </label>
+                        <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 rounded-md px-3 py-1 ring-1 ring-transparent focus-within:ring-brand-green transition-all w-48">
+                             <span className="text-gray-500 dark:text-gray-400 mr-2 font-semibold">R$</span>
+                             <input
+                                id="contribution-input-text"
+                                type="number"
+                                min="0"
+                                max="50000"
+                                value={investmentAmount}
+                                onChange={handleAmountChange}
+                                className="bg-transparent border-none focus:ring-0 text-right font-bold text-lg text-gray-900 dark:text-white w-full p-0 outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                placeholder="0"
+                             />
+                        </div>
+                    </div>
                     <input
                         id="contribution-amount-input"
                         type="range"
-                        min="100"
+                        min="0"
                         max="50000" // Um máximo razoável para um simulador genérico
                         step="100"
                         value={investmentAmount}

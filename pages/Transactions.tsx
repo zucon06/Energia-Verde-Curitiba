@@ -165,7 +165,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = parseInt(e.target.value, 10);
-        if (isNaN(value) || value < 0) value = 0;
+        if (isNaN(value)) value = 0;
         if (value > remainingFunding) value = remainingFunding;
         setInvestmentAmount(value);
     };
@@ -205,17 +205,29 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
             <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Simule sua Participação</h4>
                 <div>
-                    <label htmlFor="participation-amount" className="flex justify-between items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <span>Valor da Participação (BRL)</span>
-                        <span className="text-lg font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700/50 px-3 py-1 rounded-md">
-                            {investmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        </span>
-                    </label>
+                    <div className="flex justify-between items-center mb-2">
+                        <label htmlFor="participation-amount" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Valor da Participação (BRL)
+                        </label>
+                        <div className="flex items-center bg-gray-100 dark:bg-gray-700/50 rounded-md px-3 py-1 ring-1 ring-transparent focus-within:ring-brand-green transition-all w-48">
+                             <span className="text-gray-500 dark:text-gray-400 mr-2 font-semibold">R$</span>
+                             <input
+                                id="participation-input"
+                                type="number"
+                                min="0"
+                                max={remainingFunding}
+                                value={investmentAmount}
+                                onChange={handleAmountChange}
+                                className="bg-transparent border-none focus:ring-0 text-right font-bold text-lg text-gray-900 dark:text-white w-full p-0 outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                placeholder="0"
+                             />
+                        </div>
+                    </div>
                     <input
                         id="participation-amount"
                         type="range"
-                        min="100"
-                        max={remainingFunding > 100 ? remainingFunding : 100}
+                        min="0"
+                        max={remainingFunding}
                         step="100"
                         value={investmentAmount}
                         onChange={handleAmountChange}
@@ -224,7 +236,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                     />
                      {remainingFunding > 0 ? (
                         <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            <span>R$ 100</span>
+                            <span>R$ 0</span>
                             <span>{remainingFunding.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
                         </div>
                     ) : (
